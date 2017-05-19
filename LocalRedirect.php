@@ -1,9 +1,10 @@
 <?php 
 /**
- * Bitrix Framework
- * @package bitrix
- * @subpackage main
- * @copyright 2001-2013 Bitrix
+ * Análisis del Código
+ * @package SEGURIDAD INFORMATICA
+ * @package UTN FRBA
+ * @package 2017
+* @package VULNERABILIDAD EN LINEAS 34-49
  */
 
 //    LocalRedirect()
@@ -29,12 +30,19 @@ function LocalRedirect($url, $skip_security_check=false, $status="302 Found")
 	$url = str_replace(array("\r", "\n"), "", $url);
 
 	CHTTP::SetStatus($status);
-
+	
+	/**
+	*@package CONSULTA SI URL, QUE ERA GOTO EN REDIRECT.PHP, CONTIENE UNA URL EXTERNA
+	*/
 	if(preg_match("'^(http://|https://|ftp://)'i", $url))
 	{
 		if(!defined("BX_UTF") && defined("LANG_CHARSET"))
 			$url = CharsetConverter::ConvertCharset($url, LANG_CHARSET, "UTF-8");
 
+		/**
+		*@package ESTA ES LA VULNERABILIDAD, SE GENERA UN PHP DESDE EL WEB SERVER
+		*@package QUE REDIRECCIONA AUTOMATICAMENTE A $URL
+		*/
 		header("Request-URI: ".$url);
 		header("Content-Location: ".$url);
 		header("Location: ".$url);
